@@ -107,15 +107,15 @@ def xml = """
 """
 
 vertx.setPeriodic(100) {
-  def client = vertx.createHttpClient(port: 8080, host: "localhost", keepAlive: false)
+  def client = vertx.createHttpClient(port: 8080, host: "ec2-54-206-8-215.ap-southeast-2.compute.amazonaws.com", keepAlive: false)
   try {
     client
         .setReuseAddress(true)
         .setSoLinger(0)
         .setTCPNoDelay(true)
         .setUsePooledBuffers(true)
-        .setSendBufferSize(4*1024)
-        .setReceiveBufferSize(300)
+        .setSendBufferSize(6*1024)
+        .setReceiveBufferSize(500)
     client.exceptionHandler { e ->
       container.logger.error("Unable to connect", e)
     }
@@ -126,7 +126,7 @@ vertx.setPeriodic(100) {
     request.exceptionHandler { e ->
       container.logger.error("Unable to send request", e)
     }
-    request.setTimeout(1000)
+    request.setTimeout(10000)
     request.end(xml)
   } finally {
     //client.close()
